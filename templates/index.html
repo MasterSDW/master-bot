@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="uk" x-data="{ darkMode: false }" :class="{ 'dark': darkMode }">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ремонт електроплит та духовок | Професійний сервіс</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script defer src="https://unpkg.com/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        .animate-pulse-slow {
+            animation: pulse 4s ease-in-out infinite;
+        }
+        .slide-in {
+            animation: slideIn 0.6s ease-out forwards;
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 50%, #EC4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .gradient-border {
+            position: relative;
+            background: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 50%, #EC4899 100%);
+            padding: 2px;
+            border-radius: 1rem;
+        }
+        .gradient-border > * {
+            background: white;
+            border-radius: 0.9rem;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .hover-up {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .hover-up:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        .hero-pattern {
+            background-image: 
+                radial-gradient(circle at 100% 100%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 0% 0%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
+        }
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            scroll-behavior: smooth;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            letter-spacing: -0.02em;
+        }
+        
+        /* Dark mode styles */
+        .dark body {
+            background-color: #111827;
+            color: #fff;
+        }
+        .dark .bg-white {
+            background-color: #1f2937;
+        }
+        .dark .text-gray-600 {
+            color: #9ca3af;
+        }
+        .dark .text-gray-700 {
+            color: #d1d5db;
+        }
+        .dark .bg-gray-50 {
+            background-color: #374151;
+        }
+        .dark .glass-card {
+            background: rgba(31, 41, 55, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .dark .glass-effect {
+            background: rgba(31, 41, 55, 0.8);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .dark .from-gray-50 {
+            --tw-gradient-from: #111827;
+        }
+        .dark .to-white {
+            --tw-gradient-to: #1f2937;
+        }
+        .theme-toggle {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        /* Oven Helper Styles */
+        .oven-helper {
+            position: fixed;
+            right: 30px;
+            bottom: 30px;
+            z-index: 50;
+            transition: all 0.3s ease;
+        }
+        .oven-body {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #94a3b8 0%, #475569 100%);
+            border-radius: 12px;
+            position: relative;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(71, 85, 105, 0.3);
+            animation: ovenPulse 2s ease-in-out infinite;
+        }
+        .oven-eye {
+            width: 8px;
+            height: 8px;
+            background: #ef4444;
+            border-radius: 50%;
+            position: absolute;
+            top: 6px;
+            box-shadow: 0 0 10px #ef4444;
+            animation: ovenBlink 1.5s ease-in-out infinite;
+        }
+        .oven-eye.left {
+            left: 20px;
+        }
+        .oven-eye.right {
+            right: 20px;
+        }
+        @keyframes ovenPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        @keyframes ovenBlink {
+            0%, 100% { 
+                opacity: 0.4;
+                transform: scale(0.8);
+            }
+            50% { 
+                opacity: 1;
+                transform: scale(1.2);
+            }
+        }
+        .oven-door {
+            width: 60px;
+            height: 50px;
+            background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+            border-radius: 8px;
+            position: absolute;
+            top: 15px;
+            left: 10px;
+            border: 2px solid #64748b;
+        }
+        .oven-window {
+            width: 40px;
+            height: 30px;
+            background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+            border-radius: 4px;
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            animation: ovenGlow 2s ease-in-out infinite;
+        }
+        .oven-handle {
+            width: 30px;
+            height: 4px;
+            background: #64748b;
+            border-radius: 2px;
+            position: absolute;
+            bottom: 6px;
+            left: 13px;
+        }
+        @keyframes ovenGlow {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+        .chat-container {
+            position: fixed;
+            right: 120px;
+            bottom: 100px;
+            width: 320px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+            z-index: 50;
+        }
+        .chat-container.active {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: all;
+        }
+        .chat-header {
+            background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+            padding: 15px 20px;
+            color: white;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .chat-close {
+            cursor: pointer;
+            padding: 5px;
+        }
+        .chat-messages {
+            height: 300px;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        .chat-input {
+            padding: 15px;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            gap: 10px;
+        }
+        .message {
+            margin-bottom: 15px;
+            opacity: 0;
+            transform: translateY(10px);
+            animation: messageSlideIn 0.3s ease forwards;
+        }
+        .message.bot {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        .message.user {
+            display: flex;
+            justify-content: flex-end;
+        }
+        .message-content {
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 15px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        .bot .message-content {
+            background: #f3f4f6;
+            color: #374151;
+        }
+        .user .message-content {
+            background: #22c55e;
+            color: white;
+        }
+        .options-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .chat-option {
+            background: #f3f4f6;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            color: #374151;
+        }
+        .chat-option:hover {
+            background: #e5e7eb;
+        }
+        @keyframes messageSlideIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .dark .chat-container {
+            background: #1f2937;
+        }
+        .dark .chat-messages {
+            color: #e5e7eb;
+        }
+        .dark .bot .message-content {
+            background: #374151;
+            color: #e5e7eb;
+        }
+        .dark .chat-option {
+            background: #374151;
+            color: #e5e7eb;
+        }
+        .dark .chat-option:hover {
+            background: #4b5563;
+        }
+        .dark .chat-input {
+            border-top-color: #374151;
+        }
+    </style>
+</head>
+<body class="antialiased bg-white">
+    <!-- Header -->
+    <header class="glass-effect fixed w-full z-50" x-data="{ isOpen: false }">
+        <nav class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="text-2xl font-extrabold gradient-text">РемонтПро</div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#services" class="text-gray-700 hover:text-blue-600 transition-all font-medium">Послуги</a>
+                    <a href="#about" class="text-gray-700 hover:text-blue-600 transition-all font-medium">Про нас</a>
+                    <a href="#advantages" class="text-gray-700 hover:text-blue-600 transition-all font-medium">Переваги</a>
+                    <a href="#contacts" class="text-gray-700 hover:text-blue-600 transition-all font-medium">Контакти</a>
+                    
+                    <!-- Theme Toggle Button -->
+                    <button 
+                        @click="darkMode = !darkMode" 
+                        class="theme-toggle bg-gray-100 dark:bg-gray-700"
+                        :aria-label="darkMode ? 'Switch to light mode' : 'Switch to dark mode'"
+                    >
+                        <!-- Sun icon -->
+                        <svg x-show="!darkMode" class="w-6 h-6 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+                        </svg>
+                        <!-- Moon icon -->
+                        <svg x-show="darkMode" class="w-6 h-6 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                        </svg>
+                    </button>
+
+                    <div class="gradient-border">
+                        <a href="tel:+380901234567" class="flex items-center px-6 py-2 text-blue-600 font-semibold hover:text-blue-700 transition-all">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                            </svg>
+                            +38 (090) 123-45-67
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button @click="isOpen = !isOpen" class="md:hidden focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path x-show="!isOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        <path x-show="isOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div x-show="isOpen" x-collapse class="md:hidden mt-4">
+                <div class="flex flex-col space-y-4">
+                    <a href="#services" class="text-gray-700 hover:text-blue-600 transition-all font-medium">Послуги</a>
+                    <a href="#about" class="text-gray-700 hover:text-blue-600 transition-all font-medium">Про нас</a>
+                    <a href="#advantages" class="text-gray-700 hover:text-blue-600 transition-all font-medium">Переваги</a>
+                    <a href="#contacts" class="text-gray-700 hover:text-blue-600 transition-all font-medium">Контакти</a>
+                    <a href="tel:+380901234567" class="flex items-center text-blue-600 font-semibold">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                        </svg>
+                        +38 (090) 123-45-67
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="pt-32 pb-20 hero-pattern">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="slide-in">
+                    <h1 class="text-5xl md:text-7xl font-bold mb-8 leading-tight">
+                        <span class="gradient-text">Професійний</span><br/>
+                        ремонт електроплит
+                    </h1>
+                    <p class="text-xl text-gray-600 mb-12 leading-relaxed">
+                        Швидкий та якісний ремонт електроплит та духовок будь-якої складності. 
+                        <span class="text-blue-600 font-semibold">Виїзд майстра в день звернення.</span>
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-6">
+                        <button onclick="document.getElementById('repairForm').scrollIntoView({behavior: 'smooth'})" class="px-8 py-4 rounded-xl bg-gradient-to-r from-blue-600 via-purple-600 to-pink-500 text-white font-semibold hover:shadow-xl hover:shadow-blue-500/30 transition-all transform hover:scale-105">
+                            Викликати майстра
+                        </button>
+                        <button class="gradient-border">
+                            <div class="px-8 py-4 text-gray-700 font-semibold hover:text-blue-600 transition-all">
+                                Консультація
+                            </div>
+                        </button>
+                    </div>
+                </div>
+                <div class="hidden md:block relative animate-float">
+                    <div class="absolute -inset-4 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-500 rounded-2xl transform rotate-2 opacity-75 blur-xl animate-pulse-slow"></div>
+                    <img src="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80" 
+                         alt="Ремонт техніки" 
+                         class="relative rounded-2xl shadow-2xl">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-20">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl md:text-5xl font-bold text-center mb-20">
+                <span class="gradient-text">Наші послуги</span>
+            </h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="glass-card p-8 rounded-2xl shadow-xl hover-up">
+                    <div class="w-16 h-16 bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mb-6 transform -rotate-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Ремонт електроплит</h3>
+                    <p class="text-gray-600 leading-relaxed">Діагностика та ремонт електричних плит всіх виробників. Заміна конфорок, регуляторів та інших деталей</p>
+                </div>
+                <div class="glass-card p-8 rounded-2xl shadow-xl hover-up">
+                    <div class="w-16 h-16 bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mb-6 transform -rotate-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Ремонт духовок</h3>
+                    <p class="text-gray-600 leading-relaxed">Ремонт електричних духовок, заміна нагрівальних елементів, термостатів та електроніки</p>
+                </div>
+                <div class="glass-card p-8 rounded-2xl shadow-xl hover-up">
+                    <div class="w-16 h-16 bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mb-6 transform -rotate-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Профілактика та обслуговування</h3>
+                    <p class="text-gray-600 leading-relaxed">Регулярне технічне обслуговування, чистка та налаштування електроплит і духовок</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quality Work Section -->
+    <section class="py-20 bg-gradient-to-br from-gray-50 to-white">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-2 gap-16 items-center">
+                <div class="order-2 md:order-1">
+                    <h2 class="text-4xl font-bold mb-8">
+                        <span class="gradient-text">Якісний ремонт</span><br/>з гарантією
+                    </h2>
+                    <p class="text-gray-600 mb-8 text-lg">Ми спеціалізуємось на ремонті електроплит та духовок будь-яких марок. Використовуємо тільки оригінальні запчастини та професійне обладнання для діагностики та ремонту.</p>
+                    <ul class="space-y-6">
+                        <li class="flex items-center bg-white p-4 rounded-xl shadow-lg hover-up">
+                            <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-xl flex items-center justify-center mr-4">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                            </div>
+                            <span class="text-lg">Безкоштовна діагностика при ремонті</span>
+                        </li>
+                        <li class="flex items-center bg-white p-4 rounded-xl shadow-lg hover-up">
+                            <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-xl flex items-center justify-center mr-4">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                            </div>
+                            <span class="text-lg">Гарантія на роботу до 12 місяців</span>
+                        </li>
+                        <li class="flex items-center bg-white p-4 rounded-xl shadow-lg hover-up">
+                            <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-xl flex items-center justify-center mr-4">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                            </div>
+                            <span class="text-lg">Оригінальні запчастини від виробників</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="order-1 md:order-2 relative">
+                    <div class="absolute -inset-4 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl transform -rotate-2"></div>
+                    <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80" 
+                         alt="Качественный ремонт" 
+                         class="relative rounded-2xl shadow-2xl">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Emergency Service Section -->
+    <section class="py-20">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-2 gap-16 items-center">
+                <div class="relative">
+                    <div class="absolute -inset-4 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl transform rotate-2"></div>
+                    <img src="https://images.unsplash.com/photo-1563396983906-b3795482a59a?ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80" 
+                         alt="Срочный ремонт" 
+                         class="relative rounded-2xl shadow-2xl">
+                </div>
+                <div>
+                    <h2 class="text-4xl font-bold mb-8">
+                        <span class="gradient-text">Терміновий ремонт</span><br/>електроплит
+                    </h2>
+                    <p class="text-gray-600 mb-8 text-lg">Не працює плита чи духовка? Ми готові приїхати до вас протягом 60 хвилин після звернення та відновити роботу вашої техніки на місці.</p>
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="bg-white p-6 rounded-2xl shadow-xl hover-up">
+                            <div class="text-3xl font-bold gradient-text mb-2">60</div>
+                            <div class="text-gray-600">хвилин середній час приїзду</div>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl shadow-xl hover-up">
+                            <div class="text-3xl font-bold gradient-text mb-2">95%</div>
+                            <div class="text-gray-600">ремонтів у день звернення</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Advantages Section -->
+    <section id="advantages" class="py-20 bg-gradient-to-br from-gray-50 to-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center mb-16">
+                <span class="gradient-text">Чому обирають нас</span>
+            </h2>
+            <div class="grid md:grid-cols-4 gap-8">
+                <div class="bg-white p-8 rounded-2xl shadow-xl hover:shadow-2xl hover-up text-center">
+                    <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-2xl flex items-center justify-center mx-auto mb-6 transform -rotate-6">
+                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Досвід 10+ років</h3>
+                    <p class="text-gray-600">Більше 10 років успішної роботи у сфері ремонту</p>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-xl hover:shadow-2xl hover-up text-center">
+                    <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-2xl flex items-center justify-center mx-auto mb-6 transform -rotate-6">
+                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Гарантія</h3>
+                    <p class="text-gray-600">Гарантія на всі види робіт до 1 року</p>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-xl hover:shadow-2xl hover-up text-center">
+                    <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-2xl flex items-center justify-center mx-auto mb-6 transform -rotate-6">
+                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Швидкість</h3>
+                    <p class="text-gray-600">Виїзд майстра в день звернення</p>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-xl hover:shadow-2xl hover-up text-center">
+                    <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-2xl flex items-center justify-center mx-auto mb-6 transform -rotate-6">
+                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Ціни</h3>
+                    <p class="text-gray-600">Чесні ціни без прихованих платежів</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Brands Section -->
+    <section class="py-20 bg-gradient-to-br from-gray-50 to-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center mb-16">
+                <span class="gradient-text">Бренди, які ми ремонтуємо</span>
+            </h2>
+            <div class="grid md:grid-cols-4 gap-8">
+                <!-- Bosch -->
+                <div class="bg-white p-8 rounded-2xl shadow-xl hover:shadow-2xl hover-up text-center">
+                    <h3 class="text-2xl font-bold mb-4 gradient-text">Bosch</h3>
+                    <p class="text-gray-600">Ремонт всіх моделей електроплит та духовок Bosch. Спеціалізуємося на ремонті індукційних та склокерамічних поверхонь.</p>
+                </div>
+
+                <!-- Electrolux -->
+                <div class="bg-white p-8 rounded-2xl shadow-xl hover:shadow-2xl hover-up text-center">
+                    <h3 class="text-2xl font-bold mb-4 gradient-text">Electrolux</h3>
+                    <p class="text-gray-600">Професійний ремонт техніки Electrolux. Відновлення електроніки, заміна нагрівальних елементів та панелей управління.</p>
+                </div>
+
+                <!-- Siemens -->
+                <div class="bg-white p-8 rounded-2xl shadow-xl hover:shadow-2xl hover-up text-center">
+                    <h3 class="text-2xl font-bold mb-4 gradient-text">Siemens</h3>
+                    <p class="text-gray-600">Ремонт сучасних моделей Siemens. Налаштування електронних систем, ремонт сенсорних панелей та модулів управління.</p>
+                </div>
+
+                <!-- Gorenje -->
+                <div class="bg-white p-8 rounded-2xl shadow-xl hover:shadow-2xl hover-up text-center">
+                    <h3 class="text-2xl font-bold mb-4 gradient-text">Gorenje</h3>
+                    <p class="text-gray-600">Ремонт всіх моделей Gorenje. Заміна конфорок, термостатів та ремонт систем захисту від перегріву.</p>
+                </div>
+
+                <!-- AEG -->
+                <div class="bg-white p-8 rounded-2xl shadow-xl hover:shadow-2xl hover-up text-center">
+                    <h3 class="text-2xl font-bold mb-4 gradient-text">AEG</h3>
+                    <p class="text-gray-600">Ремонт преміальної техніки AEG. Відновлення функціоналу розумних систем та електронних компонентів.</p>
+                </div>
+
+                <!-- Zanussi -->
+                <div class="bg-white p-8 rounded-2xl shadow-xl hover:shadow-2xl hover-up text-center">
+                    <h3 class="text-2xl font-bold mb-4 gradient-text">Zanussi</h3>
+                    <p class="text-gray-600">Ремонт побутової техніки Zanussi. Діагностика несправностей, заміна компонентів та відновлення роботи.</p>
+                </div>
+
+                <!-- Whirlpool -->
+                <div class="bg-white p-8 rounded-2xl shadow-xl hover:shadow-2xl hover-up text-center">
+                    <h3 class="text-2xl font-bold mb-4 gradient-text">Whirlpool</h3>
+                    <p class="text-gray-600">Професійний ремонт техніки Whirlpool. Налаштування програм, ремонт електроніки та механічних компонентів.</p>
+                </div>
+
+                <!-- Samsung -->
+                <div class="bg-white p-8 rounded-2xl shadow-xl hover:shadow-2xl hover-up text-center">
+                    <h3 class="text-2xl font-bold mb-4 gradient-text">Samsung</h3>
+                    <p class="text-gray-600">Ремонт сучасних моделей Samsung. Відновлення смарт-функцій, ремонт індукційних панелей та електроніки.</p>
+                </div>
+            </div>
+            <div class="text-center mt-12">
+                <p class="text-lg text-gray-600">А також ремонтуємо техніку інших виробників: LG, Beko, Hansa, Kaiser та інші</p>
+                <button class="mt-8 px-8 py-4 rounded-full border-2 border-blue-600 text-blue-600 hover:bg-blue-50 transition-all transform hover:scale-105">
+                    Дізнатися більше про ремонт вашої техніки
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contacts" class="py-20">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto">
+                <h2 class="text-4xl font-bold text-center mb-16">
+                    <span class="gradient-text">Замовити ремонт електроплити</span>
+                </h2>
+                <form class="bg-white p-8 rounded-2xl shadow-xl space-y-6" id="repairForm" @submit.prevent="submitForm">
+                    <div>
+                        <input type="text" name="name" placeholder="Ваше ім'я" class="w-full px-6 py-4 bg-gray-50 border-0 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all" required>
+                    </div>
+                    <div>
+                        <input type="tel" name="phone" placeholder="Ваш телефон" class="w-full px-6 py-4 bg-gray-50 border-0 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all" required>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <input type="text" name="street" placeholder="Вулиця" class="w-full px-6 py-4 bg-gray-50 border-0 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all" required>
+                        <input type="text" name="building" placeholder="Номер будинку" class="w-full px-6 py-4 bg-gray-50 border-0 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all" required>
+                    </div>
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <input type="text" name="entrance" placeholder="Під'їзд" class="w-full px-6 py-4 bg-gray-50 border-0 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all" required>
+                        <input type="text" name="floor" placeholder="Поверх" class="w-full px-6 py-4 bg-gray-50 border-0 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all" required>
+                        <input type="text" name="apartment" placeholder="Квартира" class="w-full px-6 py-4 bg-gray-50 border-0 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all" required>
+                        </div>
+                    <div>
+                        <textarea name="problem" placeholder="Опишіть проблему" rows="4" class="w-full px-6 py-4 bg-gray-50 border-0 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all" required></textarea>
+                        </div>
+                    <button type="submit" class="w-full md:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:shadow-lg hover:shadow-blue-500/30 transition-all transform hover:scale-105">
+                        Надіслати заявку
+                    </button>
+                    </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Oven Helper -->
+    <div class="oven-helper" x-data="{ 
+        isOpen: false,
+        messages: [],
+        currentOptions: [],
+        async startChat() {
+            this.isOpen = true;
+            await this.addBotMessage('Вітаю! Я ваш віртуальний консультант з ремонту електроплит та духовок. Чим можу допомогти?');
+            this.currentOptions = [
+                'Вартість ремонту',
+                'Терміни ремонту',
+                'Гарантія',
+                'Бренди техніки',
+                'Викликати майстра'
+            ];
+        },
+        async addBotMessage(text) {
+            await new Promise(resolve => setTimeout(resolve, 500));
+            this.messages.push({ type: 'bot', text: text });
+            this.$nextTick(() => {
+                this.$refs.chatMessages.scrollTop = this.$refs.chatMessages.scrollHeight;
+            });
+        },
+        async addUserMessage(text) {
+            this.messages.push({ type: 'user', text: text });
+            this.$nextTick(() => {
+                this.$refs.chatMessages.scrollTop = this.$refs.chatMessages.scrollHeight;
+            });
+        },
+        async handleOption(option) {
+            await this.addUserMessage(option);
+            
+            switch(option) {
+                case 'Вартість ремонту':
+                    await this.addBotMessage('Діагностика коштує 600 грн. У випадку ремонту діагностика безкоштовна, ви сплачуєте лише за ремонт. Середня ціна від 600 до 4000 грн.');
+                    this.currentOptions = ['Викликати майстра', 'Інші питання'];
+                    break;
+                case 'Терміни ремонту':
+                    await this.addBotMessage('Майстер приїде протягом 60 хвилин після виклику. Більшість ремонтів виконується за 1-2 години прямо на місці. Складні випадки можуть зайняти до 1-2 днів.');
+                    this.currentOptions = ['Викликати майстра', 'Інші питання'];
+                    break;
+                case 'Гарантія':
+                    await this.addBotMessage('Ми надаємо гарантію до 12 місяців на всі види робіт та замінені деталі. При виникненні проблем протягом гарантійного терміну - ремонт безкоштовний.');
+                    this.currentOptions = ['Викликати майстра', 'Інші питання'];
+                    break;
+                case 'Бренди техніки':
+                    await this.addBotMessage('Ми ремонтуємо техніку всіх популярних брендів: Bosch, Electrolux, Siemens, Gorenje, AEG, Zanussi, Whirlpool, Samsung та інші. Всі майстри мають досвід роботи з різними марками.');
+                    this.currentOptions = ['Викликати майстра', 'Інші питання'];
+                    break;
+                case 'Викликати майстра':
+                    await this.addBotMessage('Для виклику майстра, будь ласка, залиште свій номер телефону або перейдіть до форми заявки.');
+                    window.location.href = '#contacts';
+                    break;
+                case 'Інші питання':
+                    await this.addBotMessage('Чим ще можу допомогти?');
+                    this.currentOptions = [
+                        'Вартість ремонту',
+                        'Терміни ремонту',
+                        'Гарантія',
+                        'Бренди техніки',
+                        'Викликати майстра'
+                    ];
+                    break;
+            }
+        }
+    }">
+        <div class="chat-container" :class="{ 'active': isOpen }">
+            <div class="chat-header">
+                <span>Консультант РемонтПро</span>
+                <button @click="isOpen = false" class="chat-close">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="chat-messages" x-ref="chatMessages">
+                <template x-for="message in messages" :key="message.text">
+                    <div :class="['message', message.type]">
+                        <template x-if="message.type === 'bot'">
+                            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center text-white text-sm">
+                                Р
+                            </div>
+                        </template>
+                        <div class="message-content" x-text="message.text"></div>
+                    </div>
+                </template>
+                <div class="options-container" x-show="currentOptions.length > 0">
+                    <template x-for="option in currentOptions" :key="option">
+                        <button @click="handleOption(option)" class="chat-option" x-text="option"></button>
+                    </template>
+                </div>
+            </div>
+        </div>
+        <div class="oven-body" @click="startChat()">
+            <div class="oven-eye left"></div>
+            <div class="oven-eye right"></div>
+            <div class="oven-door">
+                <div class="oven-window"></div>
+                <div class="oven-handle"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-16">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-3 gap-12">
+                <div>
+                    <h3 class="text-2xl font-bold gradient-text mb-6">РемонтПро</h3>
+                    <p class="text-gray-400">Професійний ремонт електроплит та духовок з гарантією якості</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-6">Контакти</h3>
+                    <div class="space-y-4">
+                        <p class="text-gray-400 flex items-center">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                            </svg>
+                            +38 (090) 123-45-67
+                        </p>
+                        <p class="text-gray-400 flex items-center">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                            </svg>
+                            info@remont-pro.ua
+                        </p>
+                        <p class="text-gray-400 flex items-center">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                            м. Київ, вул. Приклaдна, б. 1
+                        </p>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-6">Режим роботи</h3>
+                    <div class="space-y-4">
+                        <p class="text-gray-400 flex items-center">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            Пн-Пт: 8:00 - 20:00
+                        </p>
+                        <p class="text-gray-400 flex items-center">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            Сб-Нд: 9:00 - 18:00
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 РемонтПро. Всі права захищені.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    document.getElementById('repairForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const formData = {
+            name: this.name.value,
+            phone: this.phone.value,
+            street: this.street.value,
+            building: this.building.value,
+            entrance: this.entrance.value,
+            floor: this.floor.value,
+            apartment: this.apartment.value,
+            problem: this.problem.value
+        };
+
+        try {
+            const response = await fetch('http://localhost:5000/submit-form', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const result = await response.json();
+            
+            if (result.success) {
+                alert('Дякуємо! Ваша заявка прийнята. Ми зв\'яжемося з вами найближчим часом.');
+                this.reset();
+            } else {
+                console.error('Server error:', result.error);
+                alert(`Виникла помилка при відправці форми: ${result.error}`);
+            }
+        } catch (error) {
+            console.error('Error details:', error);
+            alert(`Виникла помилка при відправці форми: ${error.message}`);
+        }
+    });
+    </script>
+</body>
+</html> 
