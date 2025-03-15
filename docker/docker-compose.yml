@@ -24,6 +24,8 @@ services:
       - CHAT_ID=${CHAT_ID}
     networks:
       - app-network
+    command: >
+      sh -c "pip install flask-cors && python bot.py"
 
   nginx:
     image: nginx:alpine
