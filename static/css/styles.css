@@ -318,6 +318,7 @@ h1, h2, h3, h4, h5, h6 {
 .is-invalid {
     border-color: #ef4444 !important;
     box-shadow: 0 0 0 1px #ef4444 !important;
+    background-color: rgba(239, 68, 68, 0.05) !important;
 }
 
 .invalid-feedback {
@@ -325,6 +326,19 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 0.875rem;
     margin-top: 0.25rem;
     display: block;
+    font-weight: 500;
+    padding-left: 0.5rem;
+}
+
+/* Темна тема для валідації */
+.dark .is-invalid {
+    border-color: #f87171 !important;
+    box-shadow: 0 0 0 1px #f87171 !important;
+    background-color: rgba(248, 113, 113, 0.1) !important;
+}
+
+.dark .invalid-feedback {
+    color: #f87171;
 }
 
 /* Стилі для модального вікна */

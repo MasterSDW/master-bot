@@ -45,6 +45,13 @@ def submit_form():
             if not data.get(field):
                 raise ValueError(f"Missing required field: {field}")
         
+        # Validate phone format
+        phone = data.get('phone', '')
+        # Remove all non-digit characters
+        digits_only = ''.join(filter(str.isdigit, phone))
+        if len(digits_only) < 10:
+            raise ValueError("Неправильний формат телефону. Будь ласка, введіть повний номер.")
+        
         # Format message for Telegram
         message = f"""🔔 Нова заявка на ремонт!
 

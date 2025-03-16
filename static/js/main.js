@@ -26,6 +26,29 @@ document.addEventListener('DOMContentLoaded', function() {
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
             
+            // Перевіряємо валідність телефону перед відправкою
+            const phoneInput = form.querySelector('input[name="phone"]');
+            const phoneMask = IMask.createMask({
+                mask: '+38 (000) 00-00-000',
+            });
+            
+            phoneMask.resolve(phoneInput.value);
+            if (phoneMask.unmaskedValue.length < 10) {
+                // Показуємо помилку, якщо телефон неправильний
+                phoneInput.classList.add('is-invalid');
+                
+                // Перевіряємо, чи вже є повідомлення про помилку
+                const errorDiv = phoneInput.parentNode.querySelector('.invalid-feedback');
+                if (!errorDiv) {
+                    const newErrorDiv = document.createElement('div');
+                    newErrorDiv.className = 'invalid-feedback';
+                    newErrorDiv.textContent = 'Будь ласка, введіть повний номер телефону';
+                    phoneInput.parentNode.appendChild(newErrorDiv);
+                }
+                
+                return; // Зупиняємо відправку форми
+            }
+            
             // Відключаємо кнопку на час відправки
             submitButton.disabled = true;
             
@@ -92,7 +115,7 @@ function initPhoneMask(input) {
     // Перевірка правильності номера при втраті фокусу
     input.addEventListener('blur', function() {
         // Перевіряємо, чи заповнена маска повністю
-        if (phoneMask.unmaskedValue.length < 12) {
+        if (phoneMask.unmaskedValue.length < 10) {
             // Додаємо клас помилки, якщо номер неповний
             this.classList.add('is-invalid');
             
