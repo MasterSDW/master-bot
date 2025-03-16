@@ -44,6 +44,8 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
+    command: >
+      sh -c "pip install flask-cors && python bot.py"
 
   nginx:
     image: nginx:alpine

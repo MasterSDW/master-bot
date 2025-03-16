@@ -6,8 +6,24 @@
     <title>Ремонт електроплит та духовок | Професійний сервіс</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script defer src="https://unpkg.com/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="/static/js/alpine-collapse.min.js"></script>
+    <script defer src="/static/js/alpine.min.js"></script>
+    <!-- Резервні варіанти, якщо локальна версія не завантажиться -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof Alpine === 'undefined') {
+                var collapseScript = document.createElement('script');
+                collapseScript.src = 'https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.12.3/dist/cdn.min.js';
+                collapseScript.defer = true;
+                document.head.appendChild(collapseScript);
+                
+                var alpineScript = document.createElement('script');
+                alpineScript.src = 'https://cdn.jsdelivr.net/npm/alpinejs@3.12.3/dist/cdn.min.js';
+                alpineScript.defer = true;
+                document.head.appendChild(alpineScript);
+            }
+        });
+    </script>
     <style>
         @keyframes float {
             0% { transform: translateY(0px); }
@@ -331,7 +347,9 @@
     <header class="glass-effect fixed w-full z-50" x-data="{ isOpen: false }">
         <nav class="container mx-auto px-6 py-4">
             <div class="flex justify-between items-center">
-                <div class="text-2xl font-extrabold gradient-text">РемонтПро</div>
+                <div class="flex items-center">
+                    <img src="/static/images/logo.png" alt="РемонтПро" class="h-12">
+                </div>
                 
                 <!-- Desktop Menu -->
                 <div class="hidden md:flex items-center space-x-8">
@@ -794,7 +812,9 @@
         <div class="container mx-auto px-4">
             <div class="grid md:grid-cols-3 gap-12">
                 <div>
-                    <h3 class="text-2xl font-bold gradient-text mb-6">РемонтПро</h3>
+                    <div class="mb-6">
+                        <img src="/static/images/logo.png" alt="РемонтПро" class="h-12">
+                    </div>
                     <p class="text-gray-400">Професійний ремонт електроплит та духовок з гарантією якості</p>
                 </div>
                 <div>

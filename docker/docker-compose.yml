@@ -24,14 +24,18 @@ services:
       - CHAT_ID=${CHAT_ID}
     networks:
       - app-network
+    command: >
+      sh -c "pip install flask-cors && python bot.py"
 
   nginx:
     image: nginx:alpine
     ports:
       - "80:80"
+      - "443:443"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ../static:/app/static:ro
+      - ./ssl:/etc/ssl:ro
     depends_on:
       - web
       - bot
