@@ -14,7 +14,7 @@ load_dotenv()
 
 # Initialize Flask app
 app = Flask(__name__)
-CORS(app)  # Enable CORS for all routes
+CORS(app, resources={r"/*": {"origins": "*"}})  # Дозволяємо CORS для всіх маршрутів і доменів
 
 # Initialize Telegram bot
 BOT_TOKEN = os.getenv('BOT_TOKEN')
