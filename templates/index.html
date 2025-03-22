@@ -110,9 +110,9 @@
                 </div>
                 <div class="hidden md:block relative animate-float">
                     <div class="absolute -inset-4 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-500 rounded-2xl transform rotate-2 opacity-75 blur-xl animate-pulse-slow"></div>
-                    <img src="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80" 
-                         alt="Ремонт техніки" 
-                         class="relative rounded-2xl shadow-2xl">
+                    <img src="/static/images/green-stove.png" 
+                         alt="Ремонт електроплит" 
+                         class="relative rounded-2xl shadow-2xl object-contain h-[500px] w-full">
                 </div>
             </div>
         </div>
@@ -165,7 +165,7 @@
             <div class="grid md:grid-cols-2 gap-16 items-center">
                 <div class="relative">
                     <div class="absolute -inset-4 bg-gradient-to-r from-purple-600 to-pink-500 rounded-2xl transform rotate-2 opacity-75 blur-xl"></div>
-                    <img src="https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80" 
+                    <img src="https://images.unsplash.com/photo-1615873968403-89e068629265?ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80" 
                          alt="Команда професіоналів" 
                          class="relative rounded-2xl shadow-2xl">
                 </div>
@@ -230,7 +230,7 @@
                 </div>
                 <div class="order-1 md:order-2 relative">
                     <div class="absolute -inset-4 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl transform -rotate-2"></div>
-                    <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80" 
+                    <img src="https://images.unsplash.com/photo-1615873968403-89e068629265?ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80" 
                          alt="Качественный ремонт" 
                          class="relative rounded-2xl shadow-2xl">
                 </div>
@@ -244,7 +244,7 @@
             <div class="grid md:grid-cols-2 gap-16 items-center">
                 <div class="relative">
                     <div class="absolute -inset-4 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl transform rotate-2"></div>
-                    <img src="https://images.unsplash.com/photo-1563396983906-b3795482a59a?ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80" 
+                    <img src="https://images.unsplash.com/photo-1615873968403-89e068629265?ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80" 
                          alt="Срочный ремонт" 
                          class="relative rounded-2xl shadow-2xl">
                 </div>
@@ -281,8 +281,8 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-semibold mb-4">Досвід 10+ років</h3>
-                    <p class="text-gray-600">Більше 10 років успішної роботи у сфері ремонту</p>
+                    <h3 class="text-xl font-semibold mb-4">Досвід 4+ років</h3>
+                    <p class="text-gray-600">Успішна робота у сфері ремонту з 2020 року</p>
                 </div>
                 <div class="bg-white p-8 rounded-2xl shadow-xl hover:shadow-2xl hover-up text-center">
                     <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-2xl flex items-center justify-center mx-auto mb-6 transform -rotate-6">
@@ -291,7 +291,7 @@
                         </svg>
                     </div>
                     <h3 class="text-xl font-semibold mb-4">Гарантія</h3>
-                    <p class="text-gray-600">Гарантія на всі види робіт до 1 року</p>
+                    <p class="text-gray-600">Гарантія на запчастини до 3 місяців, на ремонт плати до 1 місяця</p>
                 </div>
                 <div class="bg-white p-8 rounded-2xl shadow-xl hover:shadow-2xl hover-up text-center">
                     <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-2xl flex items-center justify-center mx-auto mb-6 transform -rotate-6">
@@ -372,9 +372,6 @@
             </div>
             <div class="text-center mt-12">
                 <p class="text-lg text-gray-600">А також ремонтуємо техніку інших виробників: LG, Beko, Hansa, Kaiser та інші</p>
-                <button class="mt-8 px-8 py-4 rounded-full border-2 border-blue-600 text-blue-600 hover:bg-blue-50 transition-all transform hover:scale-105">
-                    Дізнатися більше про ремонт вашої техніки
-                </button>
             </div>
         </div>
     </section>
@@ -448,15 +445,15 @@
             
             switch(option) {
                 case 'Вартість ремонту':
-                    await this.addBotMessage('Діагностика коштує 600 грн. У випадку ремонту діагностика безкоштовна, ви сплачуєте лише за ремонт. Середня ціна від 600 до 4000 грн.');
+                    await this.addBotMessage('Виїзд майстра - 600 грн. У випадку ремонту ця сума входить у вартість ремонту. Точну вартість ремонту можна визначити тільки після діагностики майстром.');
                     this.currentOptions = ['Викликати майстра', 'Інші питання'];
                     break;
                 case 'Терміни ремонту':
-                    await this.addBotMessage('Майстер приїде протягом 60 хвилин після виклику. Більшість ремонтів виконується за 1-2 години прямо на місці. Складні випадки можуть зайняти до 1-2 днів.');
+                    await this.addBotMessage('Майстер приїде протягом 60 хвилин після виклику. Більшість ремонтів виконується від 1 години до 2 днів прямо на місці, якщо це можливо. У складних випадках або при необхідності замовлення запчастин ремонт може зайняти 3-6 днів.');
                     this.currentOptions = ['Викликати майстра', 'Інші питання'];
                     break;
                 case 'Гарантія':
-                    await this.addBotMessage('Гарантія залежить від виду ремонту: при заміні запчастин - 3 місяці (є винятки), при ремонті плати - 1 місяць (також є винятки). Детальну інформацію про гарантію можна отримати у майстра при огляді техніки.');
+                    await this.addBotMessage('Гарантія залежить від виду ремонту:\n- При заміні запчастин - 3 місяці (є винятки)\n- При ремонті плати - 1 місяць (є винятки)\n\nДетальні умови гарантії та можливі винятки обговорюються з майстром при діагностиці, оскільки вони залежать від конкретного випадку та використаних запчастин.');
                     this.currentOptions = ['Викликати майстра', 'Інші питання'];
                     break;
                 case 'Бренди техніки':
@@ -530,24 +527,23 @@
                 <div>
                     <h3 class="text-xl font-bold mb-6">Контакти</h3>
                     <div class="space-y-4">
-                        <p class="text-gray-400 flex items-center">
+                        <a href="tel:+380689688142" class="text-gray-400 flex items-center hover:text-blue-500 transition-all">
                             <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
                             </svg>
                             +38 (068) 968-81-42
-                        </p>
-                        <p class="text-gray-400 flex items-center">
+                        </a>
+                        <a href="mailto:info@remont-pro.ua" class="text-gray-400 flex items-center hover:text-blue-500 transition-all">
                             <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                             </svg>
                             info@remont-pro.ua
-                        </p>
+                        </a>
                         <p class="text-gray-400 flex items-center">
                             <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                             </svg>
-                            м. Київ, вул. Приклaдна, б. 1
+                            м. Київ
                         </p>
                     </div>
                 </div>
@@ -570,7 +566,7 @@
                 </div>
             </div>
             <div class="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
-                <p>&copy; 2024 РемонтПро. Всі права захищені.</p>
+                <p>&copy; 2020 РемонтПро. Всі права захищені.</p>
             </div>
         </div>
     </footer>
