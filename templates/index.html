@@ -416,6 +416,10 @@
         isOpen: false,
         messages: [],
         currentOptions: [],
+        init() {
+            this.messages = [];
+            this.currentOptions = [];
+        },
         async startChat() {
             this.isOpen = true;
             await this.addBotMessage('Вітаю! Я ваш віртуальний консультант з ремонту електроплит та духовок. Чим можу допомогти?');
@@ -430,13 +434,17 @@
             await new Promise(resolve => setTimeout(resolve, 500));
             this.messages.push({ type: 'bot', text: text });
             this.$nextTick(() => {
-                this.$refs.chatMessages.scrollTop = this.$refs.chatMessages.scrollHeight;
+                if (this.$refs.chatMessages) {
+                    this.$refs.chatMessages.scrollTop = this.$refs.chatMessages.scrollHeight;
+                }
             });
         },
         async addUserMessage(text) {
             this.messages.push({ type: 'user', text: text });
             this.$nextTick(() => {
-                this.$refs.chatMessages.scrollTop = this.$refs.chatMessages.scrollHeight;
+                if (this.$refs.chatMessages) {
+                    this.$refs.chatMessages.scrollTop = this.$refs.chatMessages.scrollHeight;
+                }
             });
         },
         async handleOption(option) {
@@ -470,7 +478,7 @@
                     break;
             }
         }
-    }">
+    }" x-init="init">
         <div class="chat-container" :class="{ 'active': isOpen }">
             <div class="chat-header">
                 <span>Консультант РемонтПро</span>
@@ -481,15 +489,17 @@
                 </button>
             </div>
             <div class="chat-messages" x-ref="chatMessages">
-                <template x-for="message in messages" :key="message.text">
-                    <div :class="['message', message.type]">
-                        <template x-if="message.type === 'bot'">
-                            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center text-white text-sm">
-                                Р
-                            </div>
-                        </template>
-                        <div class="message-content" x-text="message.text"></div>
-                    </div>
+                <template x-if="messages.length > 0">
+                    <template x-for="message in messages" :key="message.text">
+                        <div :class="['message', message.type]">
+                            <template x-if="message.type === 'bot'">
+                                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center text-white text-sm">
+                                    Р
+                                </div>
+                            </template>
+                            <div class="message-content" x-text="message.text"></div>
+                        </div>
+                    </template>
                 </template>
                 <div class="options-container" x-show="currentOptions.length > 0">
                     <template x-for="option in currentOptions" :key="option">
