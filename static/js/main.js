@@ -75,6 +75,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Очищаємо форму і показуємо повідомлення про успіх
                     form.reset();
                     showMessage('Дякуємо за вашу заявку! Ми зв\'яжемося з вами найближчим часом.', 'success');
+                    
+                    // Відправляємо подію у dataLayer для відстеження конверсії
+                    window.dataLayer = window.dataLayer || [];
+                    dataLayer.push({
+                        'event': 'form_submit',
+                        'phone': formData.phone // Передаємо номер телефону для розширеного відслідковування
+                    });
                 } else {
                     showMessage(result.error || 'Виникла помилка при відправці форми', 'error');
                 }
