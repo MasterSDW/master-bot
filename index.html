@@ -4,10 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title data-i18n="metaTitle">Lumi Beauty — Manicure, Pedicure, Hair Extensions</title>
+
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+
+  <!-- Подключение CSS из папки static -->
+  <link rel="stylesheet" href="static/styles.css">
 </head>
 <body>
   <header class="header">
@@ -27,56 +31,7 @@
   </header>
 
   <main>
-    <section class="hero">
-      <div class="hero-bg"></div>
-      <div class="container hero-content">
-        <h1 class="hero-title" data-i18n="heroTitle">Manicure · Pedicure · Hair Extensions</h1>
-        <p class="hero-subtitle" data-i18n="heroSubtitle">Professional care for your hands, feet, and hair. Book your appointment today.</p>
-        <a href="#contact" class="btn btn-primary" data-i18n="heroCta">Book now</a>
-      </div>
-    </section>
-
-    <section id="services" class="section services">
-      <div class="container">
-        <h2 class="section-title" data-i18n="servicesTitle">Our Services</h2>
-        <div class="services-grid">
-          <article class="service-card">
-            <div class="service-icon">✦</div>
-            <h3 class="service-title" data-i18n="manicureTitle">Manicure</h3>
-            <p class="service-desc" data-i18n="manicureDesc">Classic and gel manicure, nail art, nail strengthening. We work with premium products for a long-lasting result.</p>
-          </article>
-          <article class="service-card">
-            <div class="service-icon">◆</div>
-            <h3 class="service-title" data-i18n="pedicureTitle">Pedicure</h3>
-            <p class="service-desc" data-i18n="pedicureDesc">Hardware and classic pedicure, foot care, callus removal. Your feet will look and feel perfect.</p>
-          </article>
-          <article class="service-card">
-            <div class="service-icon">◈</div>
-            <h3 class="service-title" data-i18n="hairTitle">Hair Extensions</h3>
-            <p class="service-desc" data-i18n="hairDesc">Afro hair extensions: length and volume without harming your hair. Extensions on braids, color matched to your hair with a seamless blend.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section id="about" class="section about">
-      <div class="container">
-        <h2 class="section-title" data-i18n="aboutTitle">About Us</h2>
-        <p class="about-text" data-i18n="aboutText">We are a beauty studio that values quality, hygiene, and your comfort. Our masters regularly train and use only proven materials. We create a relaxing atmosphere so that every visit feels like a small holiday.</p>
-      </div>
-    </section>
-
-    <section id="contact" class="section contact">
-      <div class="container">
-        <h2 class="section-title" data-i18n="contactTitle">Contact & Booking</h2>
-        <p class="contact-intro" data-i18n="contactIntro">Write to us or call to book an appointment. We are happy to advise you on services and prices.</p>
-        <div class="contact-block">
-          <a href="tel:+3725123456" class="contact-link">+372 5123 456</a>
-          <a href="mailto:hello@lumibeauty.ee" class="contact-link">hello@lumibeauty.ee</a>
-        </div>
-        <p class="contact-hours" data-i18n="contactHours">Mon–Fri 10:00–20:00, Sat 10:00–18:00</p>
-      </div>
-    </section>
+    <!-- Тут весь твой контент сайта (services, about, contact) -->
   </main>
 
   <footer class="footer">
@@ -85,6 +40,7 @@
     </div>
   </footer>
 
-  <script src="script.js"></script>
+  <!-- Подключение JS из папки static -->
+  <script src="static/script.js"></script>
 </body>
 </html>
