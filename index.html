@@ -11,8 +11,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 
   <!-- CSS -->
-  <link rel="stylesheet" href="css/style.css">
-
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  
   <!-- Favicon -->
   <link rel="icon" href="favicon/favicon.ico" type="image/x-icon">
 </head>
@@ -97,6 +97,6 @@
   </footer>
 
   <!-- JS -->
-  <script src="js/script.js"></script>
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>
